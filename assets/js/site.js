@@ -76,6 +76,10 @@
       film.hi = mix(film.hi, '#ffffff', 0.6);
       film.shadow = mix(film.shadow, '#c9cbcc', 0.4);
     }
+    if (film.family === 'Black') {
+      film.base = darken(film.base, 0.45);
+      film.shadow = darken(film.shadow, 0.4);
+    }
     return film;
   });
   function byName(n) { for (var i = 0; i < FILMS.length; i++) if (FILMS[i].name === n) return FILMS[i]; return null; }
@@ -130,7 +134,7 @@
         var m = mask[i] / 255;
         if (m < 0.004) { o[i] = base[i]; o[i + 1] = base[i + 1]; o[i + 2] = base[i + 2]; o[i + 3] = 255; continue; }
         var d = shade[i] / 127.5, s = shade[i + 1] / 255, r = fr, g = fg, b = fb;
-        if (fin === 'Matte') { d = 0.55 + 0.45 * Math.min(d, 1.3); s *= 0.06; }
+        if (fin === 'Matte') { d = 0.42 + 0.5 * Math.min(d, 1.3); s *= 0.06; }
         else if (fin === 'Satin') { d = 0.35 + 0.65 * d; s *= 0.32; }
         else if (fin === 'Chrome') { d = Math.max(0.05, Math.min(1.8, (d - 0.55) * 2 + 0.6)); s = Math.min(1, s * 1.4); }
         else if (fin === 'Metallic') { var hh = ((p * 2654435761) >>> 0) % 1000; if (hh < 7) s = Math.min(1, s + 0.22 * d); d *= 0.97 + (hh % 7) * 0.008; }
