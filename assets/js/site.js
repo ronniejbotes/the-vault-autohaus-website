@@ -329,7 +329,7 @@
       SHOW.forEach(function (f, i) { setTimeout(function () { Car.render(f); }, 60 * i); });
     });
   }
-  if ('requestIdleCallback' in window) requestIdleCallback(warmCar, { timeout: 2500 }); else setTimeout(warmCar, 1500);
+  if (q('.car-canvas')) { if ('requestIdleCallback' in window) requestIdleCallback(warmCar, { timeout: 2500 }); else setTimeout(warmCar, 1500); }
 
   /* ---------- without the motion libraries: everything shows, nothing moves ---------- */
   if (!hasGsap) {
@@ -376,26 +376,28 @@
   var heroPic = q('.hero__media picture'), heroImg = q('.hero__media img');
   var intro = gsap.timeline({ defaults: { ease: 'expo.out' }, delay: 0.1 });
   gsap.set('[data-intro]', { opacity: 1 });
-  intro.set(heroPic, { filter: 'brightness(0)', scale: 1.12 })
+  if (!heroPic) { root.classList.add('motion-ready'); }
+  if (heroPic) intro.set(heroPic, { filter: 'brightness(0)', scale: 1.12 })
     .to(heroPic, { keyframes: [
       { filter: 'brightness(0.5)', duration: 0.05 }, { filter: 'brightness(0.05)', duration: 0.09 },
       { filter: 'brightness(0.8)', duration: 0.05 }, { filter: 'brightness(0.15)', duration: 0.12 },
       { filter: 'brightness(1)', duration: 0.45 }
     ], ease: 'none' }, 0.15)
-    .to(heroPic, { scale: 1, duration: 2.4, ease: 'expo.out' }, 0.15)
-    .from(splitChars(q('.hero__kicker')), { opacity: 0, duration: 0.4, stagger: 0.012, ease: 'none' }, 0.5);
+    .to(heroPic, { scale: 1, duration: 2.4, ease: 'expo.out' }, 0.15);
+  if (q('.hero__kicker')) intro.from(splitChars(q('.hero__kicker')), { opacity: 0, duration: 0.4, stagger: 0.012, ease: 'none' }, 0.5);
   qa('.hero__line').forEach(function (line, n) {
     intro.from(splitChars(line, true), { yPercent: 118, rotate: 6, duration: 1.15, stagger: 0.024 }, 0.62 + n * 0.14);
   });
-  intro.from('.hero__lede, .hero__actions, .hero__call', { y: 26, opacity: 0, duration: 1, stagger: 0.09 }, 1.05)
-    .fromTo('.hero__glare', { xPercent: -60 }, { xPercent: 60, duration: 1.8, ease: 'power2.inOut' }, 0.9)
-    .from('.hero__cue', { opacity: 0, y: 12, duration: 0.8 }, 1.6)
-    .add(function () { root.classList.add('motion-ready'); }, 0.2);
+  var rise = qa('.crumbs, .hero__lede, .page-hero__lede, #hero .hero__actions, .hero__call');
+  if (rise.length) intro.from(rise, { y: 26, opacity: 0, duration: 1, stagger: 0.09 }, 1.05);
+  if (q('.hero__glare')) intro.fromTo('.hero__glare', { xPercent: -60 }, { xPercent: 60, duration: 1.8, ease: 'power2.inOut' }, 0.9);
+  if (q('.hero__cue')) intro.from('.hero__cue', { opacity: 0, y: 12, duration: 0.8 }, 1.6);
+  intro.add(function () { root.classList.add('motion-ready'); }, 0.2);
 
   /* hero on scroll: the car pushes in, the words lift away */
-  gsap.timeline({ scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true } })
+  if (q('#hero') && heroImg) gsap.timeline({ scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true } })
     .to(heroImg, { scale: 1.16, yPercent: 7, ease: 'none' }, 0)
-    .to('.hero__copy', { yPercent: -22, opacity: 0.15, ease: 'none' }, 0)
+    .to(q('.hero__copy, .page-hero__copy'), { yPercent: -22, opacity: 0.15, ease: 'none' }, 0)
     .to('.hero__glare', { xPercent: 140, ease: 'none' }, 0);
 
   /* the torch: a paint-inspection light that follows the cursor (or drifts on its own on touch screens) */
@@ -441,7 +443,7 @@
   });
 
   /* scroll progress */
-  gsap.to('.progress span', { scaleX: 1, ease: 'none', scrollTrigger: { start: 0, end: 'max', scrub: 0.3 } });
+  if (q('.progress span')) gsap.to('.progress span', { scaleX: 1, ease: 'none', scrollTrigger: { start: 0, end: 'max', scrub: 0.3 } });
 
   /* section titles stamp in letter by letter */
   qa('.split').forEach(function (el) {
@@ -513,23 +515,31 @@
     });
     gsap.fromTo('.car-wrap--show', { scale: 0.86, y: 40 }, { scale: 1, y: 0, ease: 'none', scrollTrigger: { trigger: '#showroom', start: 'top bottom', end: 'top top', scrub: true } });
   }
-  ScrollTrigger.create({ trigger: '#prices', start: 'top bottom', once: true, onEnter: function () { Car.load(); } });
+  if (q('#prices')) ScrollTrigger.create({ trigger: '#prices', start: 'top bottom', once: true, onEnter: function () { Car.load(); } });
+  if (q('.vault--page')) ScrollTrigger.create({ trigger: '.vault--page', start: 'top bottom', once: true, onEnter: function () { Car.load(); } });
 
   /* the ceramic band: slower picture, sliding words */
+  if (q('.band')) {
   gsap.fromTo('.band img', { yPercent: -18 }, { yPercent: 0, ease: 'none', scrollTrigger: { trigger: '.band', start: 'top bottom', end: 'bottom top', scrub: true } });
   gsap.fromTo('.band__line .display:first-child', { xPercent: -12 }, { xPercent: 8, ease: 'none', scrollTrigger: { trigger: '.band', start: 'top bottom', end: 'bottom top', scrub: true } });
   gsap.fromTo('.band__ghost', { xPercent: 20 }, { xPercent: -6, ease: 'none', scrollTrigger: { trigger: '.band', start: 'top bottom', end: 'bottom top', scrub: true } });
+  }
 
   /* booking: a line fills and each step lights up as it is reached */
   var stepsEls = qa('.steps li');
-  gsap.to('.steps__line span', {
+  if (stepsEls.length) gsap.to('.steps__line span', {
     scaleX: 1, ease: 'none',
     scrollTrigger: {
       trigger: '.steps-wrap', start: 'top 78%', end: 'bottom 60%', scrub: 0.6,
       onUpdate: function (self) { stepsEls.forEach(function (li, i) { li.classList.toggle('is-on', self.progress >= i / stepsEls.length + 0.04); }); }
     }
   });
-  gsap.from(stepsEls, { y: 40, opacity: 0, duration: 1, ease: 'expo.out', stagger: 0.12, scrollTrigger: { trigger: '.steps', start: 'top 85%', once: true } });
+  if (stepsEls.length) gsap.from(stepsEls, { y: 40, opacity: 0, duration: 1, ease: 'expo.out', stagger: 0.12, scrollTrigger: { trigger: '.steps', start: 'top 85%', once: true } });
+  /* service pages: prose sections and related cards rise in */
+  ScrollTrigger.batch(qa('.prose__section > :not(.prose__title), .rel-card'), {
+    start: 'top 90%', once: true,
+    onEnter: function (els) { gsap.fromTo(els, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.9, ease: 'expo.out', stagger: 0.06, overwrite: true }); }
+  });
 
   /* FAQ opens and closes smoothly */
   qa('.faq details').forEach(function (d) {

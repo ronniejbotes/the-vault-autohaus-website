@@ -8,6 +8,13 @@
 - Colour PPF: R40 000, with a complimentary detail (394 TPU colour films to choose from)
 - Detail without a wrap: R4 000 to R6 000
 
+## Pages
+- Home: services, prices, the colour vault (394 colour PPF films on a live car preview), booking steps, questions, contact
+- ppf.html: clear and matte paint protection film, frontal or full
+- colour-ppf.html: colour change in TPU colour PPF, with the colour vault
+- detailing.html: interior and exterior car detailing
+- polishing-ceramic-coating.html: machine polishing (paint correction) and ceramic coating
+
 ## Contact
 - Phone and WhatsApp: +27 84 407 6980
 - Address: to come
