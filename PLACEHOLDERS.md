@@ -19,3 +19,7 @@ Everything below is marked in the site so it's easy to find: visible text carrie
 | 13 | **Colour range**: confirm the 394 films in the supplier catalogue (DCL TPU colour PPF) are all available | Colour vault, Colour PPF copy, FAQ |
 | 14 | **Google Business Profile** | Create and verify it at the street address, then link it here |
 | 15 | **Analytics** (agency GA4 and Clarity) | Add once live, with a privacy policy page (POPIA) |
+
+## Also on the service pages (21 Oct 2026)
+
+Shown in amber with `data-ph`, same as above: clear PPF brand, film lifespan and warranty, days before the first wash, matte PPF price, how long each job takes, the detail checklist (confirm each line) and products used, ceramic coating brand, durability and price, polishing price, nearby areas served, province and postal code. Titles and H1s leave the town out until it is known: add "in <Town>" to each (the HTML comment at the top of every page says where). The colour PPF page does not name the film brand (DCL) until the client says it may.
