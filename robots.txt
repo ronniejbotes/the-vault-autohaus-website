@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
 
-# PLACEHOLDER (domain): change to the real domain before launch
-Sitemap: https://DOMAIN-TO-COME/sitemap.xml
+Sitemap: https://www.thevaultsa.co.za/sitemap.xml

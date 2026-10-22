@@ -194,7 +194,7 @@ button, input { font: inherit; color: inherit; }
 .ribbon__row--films i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; vertical-align: -1px; box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.18); }
 
 /* ---------- sections ---------- */
-.section { padding: clamp(90px, 12vw, 160px) 0; position: relative; }
+.section { padding: clamp(90px, 12vw, 160px) 0; position: relative; overflow-x: clip; } /* clip: a slanted title's top line can't widen the page on a phone */
 .section__head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr); gap: 32px 64px; align-items: end; margin-bottom: clamp(44px, 6vw, 80px); }
 .section__head .lede { margin: 0; }
 @media (max-width: 880px) { .section__head { grid-template-columns: 1fr; } }

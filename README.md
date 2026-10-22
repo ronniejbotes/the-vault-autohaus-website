@@ -14,7 +14,7 @@ Static site for The Vault Autohaus (paint protection film, colour PPF, exterior 
 
 ## Before launch
 
-Fill in everything in `PLACEHOLDERS.md` (the domain first). Contact links use +27 84 407 6980 for calls and WhatsApp.
+The domain is www.thevaultsa.co.za (canonicals, sitemap and robots point there). Fill in what is still open in `PLACEHOLDERS.md`. Contact links use +27 84 407 6980 for calls and WhatsApp.
 
 ## Deploy
 
