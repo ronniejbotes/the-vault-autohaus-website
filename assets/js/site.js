@@ -209,7 +209,7 @@
     if (metaEl) metaEl.textContent = f.finish + ' · ' + f.family;
     if (fromUser) root.style.setProperty('--film', accentOf(f));
     if (cta) {
-      cta.href = WA + encodeURIComponent('Hi The Vault Autohaus, I\'m interested in colour PPF in ' + f.name + ' (' + f.finish + '). My car is: ');
+      cta.href = WA + encodeURIComponent('Hi The Vault, I\'m interested in colour PPF in ' + f.name + ' (' + f.finish + '). My car is: ');
       var label = cta.querySelector('span') || cta;
       label.textContent = 'Ask about ' + f.name + ' on WhatsApp';
     }
