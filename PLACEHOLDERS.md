@@ -2,42 +2,50 @@
 
 Everything still open is marked in the site so it's easy to find: visible text carries `class="ph" data-ph="<name>"` (shown dashed and amber). Run `grep -rn "data-ph\|PLACEHOLDER" .` to list them.
 
-## Done (client's answers, 23 Oct 2026)
+## Done (client's answers, 23 Oct and 28 Oct 2026)
+
+Second-round answers: `seo-program/plans/the-vault-autohaus/content/client-answers-2026-10-28.md`.
 
 | What | Answer | Where it went |
 |---|---|---|
-| **Domain** | www.thevaultsa.co.za | Canonical and `og:url` on every page, structured data URLs, `sitemap.xml`, the `Sitemap:` line in `robots.txt`, llms.txt |
+| **Name** (28 Oct) | "The Vault": take "Autohaus" out of the name and logo completely ("we aren't a dealership anymore"). Instagram is The Vault SA | Titles, og:site_name, structured data (`name` The Vault SA, `alternateName` The Vault), alt text, footer, WhatsApp messages, manifest, llms.txt. The AUTOHAUS line is removed from `logo-wordmark.*` and `og-image.jpg` |
+| **Domain** (28 Oct) | thevaultppf.co.za (the old thevaultsa.co.za login is lost) | Canonical and `og:url` on every page, structured data URLs, `sitemap.xml`, the `Sitemap:` line in `robots.txt`, llms.txt |
 | **Area served** | Germiston and Bedfordview, Gauteng | Every title, H1 and meta description, the home hero kicker, contact facts, the "Where are you?" questions, structured data `areaServed`, llms.txt |
-| **Hours** | By appointment only | Contact facts, booking steps, llms.txt. No `openingHours` in the structured data, because there are no set hours |
+| **Premises** (28 Oct) | Secured in Bedfordview (last signing and payment); no street address yet | "Studio in Bedfordview: street address to follow" in contact facts and the "Where are you?" questions |
+| **Hours** | By appointment only | Contact facts, booking steps, llms.txt. No `openingHours` in the structured data |
 | **VAT** | Not VAT registered, so no VAT is added | Note under every price list, the price questions |
-| **Large SUVs** | Can cost up to R3 000 extra for clear PPF and up to R5 000 extra for colour PPF | Price notes on the home, PPF and colour PPF pages, the price questions, Offer descriptions |
-| **Frontal PPF panels** | Complete front bumper (painted sections included), entire bonnet, both front fenders, both painted side-mirror caps | Home price list, PPF page (list and price table), Offer descriptions |
-| **The detail checklist** | Exterior, interior and optional add-ons, line by line | Detailing page; the old generic list is gone |
-| **Products** | Mainly Detail Ease; alternatives such as Meguiar's when the car needs it | Detailing page and its questions, llms.txt |
-| **Ceramic coating price and time** | From R5 000, depending on vehicle size and coating brand; 1 to 3 days | Home price list and booking step 3, polishing and ceramic page, structured data |
-| **Polishing prices** | Basic gloss polish from R1 200, light correction from R2 000, medium correction from R3 500, heavy correction after an inspection | Home price list, polishing and ceramic page, detailing page, structured data |
-| **Inspection before booking** | Required, for a professional recommendation | Booking steps on every page, the price questions, a new home question. It also replaces "what sets the price within the R4 000 to R6 000 range" on the detailing page |
-| **Instagram, TikTok, Facebook** | instagram.com/the.vault_sa, tiktok.com/@the.vault.sa, facebook.com/people/TheVault-Autohaus/61574753161941 | Contact facts, every footer, structured data `sameAs`, llms.txt |
-| **Colour film brand** | Not to be named | Stays unnamed everywhere on the site |
+| **Large SUVs** | Up to R3 000 extra for clear PPF and up to R5 000 extra for colour PPF | Price notes on the home, PPF and colour PPF pages, the price questions, Offer descriptions |
+| **Frontal PPF panels** | Complete front bumper (painted sections included), entire bonnet, both front fenders, both painted side-mirror caps | Home price list, PPF page, Offer descriptions |
+| **Warranty** (28 Oct) | 5 years, "on PPF as a whole" | Home PPF list, price lede and question; PPF and colour PPF pages; `warranty` on the PPF offers |
+| **Matte PPF price** (28 Oct) | Same as gloss | Home price note and question, PPF page table, aside and questions |
+| **Wings and other parts** (28 Oct) | Quoted per part and vehicle | Home services, price note and question |
+| **Turnaround** (28 Oct) | 4 to 5 working days "for clear ppf, colour enhancing and full detail"; ceramic 1 to 3 days | Home booking step and question, PPF, colour PPF and detailing pages |
+| **Colour PPF** (28 Oct) | Door shuts included; 2 to 3 week order period | Home services and price list, colour PPF page (steps, aside, questions, Offer) |
+| **Detailing** | Full checklist; mainly Detail Ease, Meguiar's when needed; interior and exterior details both done (28 Oct); engine bay detailing after an inspection (28 Oct) | Detailing page |
+| **Headlights** (28 Oct) | Headlight and tail light restoration, R2 000, depending on the damage | Home price list and services, detailing page, structured data |
+| **Polishing prices** | Basic gloss polish from R1 200, light correction from R2 000, medium correction from R3 500, heavy correction after an inspection | Home, polishing and ceramic page, detailing page, structured data |
+| **Ceramic coating** (28 Oct) | Three packages: Essential Gloss R2 500 to R3 500 (6 to 12 months), Signature Ceramic R4 500 to R6 000 (up to 2 years), Premium Ceramic R6 500 to R8 500 (3 to 5 years), "should the client take appropriate care of their vehicle"; Detail Ease or Meguiar's; 1 to 3 days. Replaces "from R5 000" | Home price list, polishing and ceramic page (packages section, table, aside, questions, Offers), detailing page |
+| **Coating over PPF** (28 Oct) | Yes over gloss PPF; over matte PPF it takes the effect away | Polishing and ceramic page, PPF page |
+| **Inspection before booking** | Required, for a professional recommendation | Booking steps on every page, the price questions |
+| **Instagram, TikTok, Facebook** | instagram.com/the.vault_sa, tiktok.com/@the.vault.sa, facebook.com/people/TheVault-Autohaus/61574753161941 | Contact facts, footers, structured data `sameAs`, llms.txt. The Facebook address still says "TheVault-Autohaus" because it is their page's own URL |
+| **Film brands** | Colour film brand not named; clear PPF brand not disclosed ("we can stipulate in house") | Neither is named anywhere on the site |
+| **Gmail for the Business Profile** (28 Oct) | Leighcalitz@gmail.com | Not on the site; for creating the profile |
 
 ## Still open
 
 | # | What | Where it goes |
 |---|---|---|
-| 1 | **Street address** (premises not secured yet) | Contact facts and the "Where are you?" questions (`data-ph="address"`, `street-address`), structured data `address` |
-| 2 | **Map** | Contact (`data-ph="map"`, a short line for now): a Google Maps embed once the address is known |
+| 1 | **Street address** in Bedfordview | Contact facts and the "Where are you?" questions (`data-ph="address"`, `street-address`), structured data `address` |
+| 2 | **Map** | Contact (`data-ph="map"`): a Google Maps embed once the address is known |
 | 3 | **Email address** | Contact facts (`data-ph="email"`) |
-| 4 | **Clear PPF brand** | PPF page (`clear-ppf-brand`) |
-| 5 | **Film lifespan and warranty**. The client said "standard 5 year warranty as the brand is still fairly new", but not which product it covers. Keep 5 years off the site until that's clear | PPF page (`film-lifespan`, `warranty`) |
-| 6 | **Days before the first wash after PPF** | PPF page (`number-of-days`) |
-| 7 | **Ceramic coating brand, lifespan, cure time and first-wash advice** | Polishing and ceramic page (`ceramic-coating-brand`, `coating-lifespan`, `cure-time-and-first-wash-advice-for-the-`) |
-| 8 | **Whether they coat over PPF, and the price** | Polishing and ceramic page (`confirm-does-the-vault-coat-over-ppf-and`) |
-| 9 | **Matte PPF price and the price for fitting exterior parts** | Shown as "quoted per car" on the home and PPF pages |
-| 10 | **How long PPF, colour PPF and a detail take** (only ceramic coating is known: 1 to 3 days) | Home booking step 3 (`turnaround`), PPF page (`how-long-a-ppf-job-takes`), colour PPF page (`how-long-a-colour-change-takes`), detailing page (`how-long-a-detail-takes`) |
-| 11 | **Colour PPF: lead time to order a colour, whether door shuts are included, samples at the studio** | Colour PPF page (`lead-time-if-the-colour-has-to-be-ordere`, `confirm-are-door-shuts-included`, `confirm-film-samples-to-view-at-the-stud`) |
-| 12 | **Whether an interior-only (or exterior-only) detail is offered** | Detailing page (`confirm-these-are-offered`, `confirm-interior-only-detail-offered`) |
-| 13 | **Real photos of their work** | Replace the five illustrative images in `assets/img/` (hero, ppf-fit, wing, interior, ceramic). They were made with AI because the client had no job photos yet; they show no real car model and no badges |
-| 14 | **Colour range**: confirm all 394 films in the supplier catalogue are available | Colour vault, colour PPF copy, questions |
-| 15 | **Province and postal code beyond "Gauteng"** | Structured data `address`, with the street address |
-| 16 | **Google Business Profile** | Create and verify it once there is a street address, then link it here |
-| 17 | **Analytics** (agency GA4 and Clarity) | Add once live, with a privacy policy page (POPIA) |
+| 4 | **Days before the first wash after PPF** | PPF page (`number-of-days`) |
+| 5 | **Ceramic coating cure time and first-wash advice** | Polishing and ceramic page (`cure-time-and-first-wash-advice-for-the-`) |
+| 6 | **Film samples to view at the studio** | Colour PPF page (`confirm-film-samples-to-view-at-the-stud`) |
+| 7 | **Turnaround wording**: is it 4 to 5 working days for each of clear PPF, colour PPF and a full detail, or for all three together? The site reads it as each | Home booking step and question, PPF, colour PPF and detailing pages |
+| 8 | **Real photos and videos of their work** | Replace the five illustrative images in `assets/img/` (hero, ppf-fit, wing, interior, ceramic). They were made with AI because the client had no job photos yet; they show no real car model and no badges |
+| 9 | **Colour range**: confirm all 394 films in the supplier catalogue are available | Colour vault, colour PPF copy, questions |
+| 10 | **Postal code** | Structured data `address`, with the street address |
+| 11 | **Reviews**: "I'll get some reviews sorted"; we still want 10 to 20 customers to ask | Google Business Profile |
+| 12 | **Google Business Profile** | Create with Leighcalitz@gmail.com and verify once there is a street address, then link it here |
+| 13 | **Analytics** (agency GA4 and Clarity) | Add once live, with a privacy policy page (POPIA) |
+| 14 | **Facebook page name**: still "TheVault-Autohaus" in its address | The client can rename the page; update the link if the address changes |

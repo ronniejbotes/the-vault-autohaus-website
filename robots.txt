@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.thevaultsa.co.za/sitemap.xml
+Sitemap: https://thevaultppf.co.za/sitemap.xml
