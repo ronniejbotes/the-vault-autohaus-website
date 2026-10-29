@@ -55,13 +55,15 @@
     menu.addEventListener('click', function () {
       var open = top.classList.toggle('is-open');
       menu.setAttribute('aria-expanded', open ? 'true' : 'false');
-      menu.setAttribute('aria-label', open ? 'Close the menu' : 'Open the menu');
+      var lab = menu.querySelector('b');
+      if (lab) lab.textContent = open ? 'Close' : 'Menu';
     });
     qa('.top__nav a', top).forEach(function (a) {
       a.addEventListener('click', function () {
         top.classList.remove('is-open');
         menu.setAttribute('aria-expanded', 'false');
-        menu.setAttribute('aria-label', 'Open the menu');
+        var lab = menu.querySelector('b');
+        if (lab) lab.textContent = 'Menu';
       });
     });
   }
@@ -337,15 +339,12 @@
 
   /* ---------- without the motion libraries: everything shows, nothing moves ---------- */
   if (!hasGsap) {
-    root.classList.add('motion-failed');
-    qa('.split').forEach(function (el) { el.classList.add('is-split'); });
+    root.classList.add('motion-failed', 'no-motion');
     return;
   }
 
   /* ================= motion ================= */
   gsap.registerPlugin(ScrollTrigger);
-  var hasSplit = !!window.SplitText;
-  if (hasSplit) gsap.registerPlugin(SplitText);
   ScrollTrigger.config({ ignoreMobileResize: true });
 
   /* smooth scrolling */
@@ -370,44 +369,26 @@
   });
 
   function startMotion() {
-  function splitChars(el, mask) {
-    if (!hasSplit) return [el];
-    var s = SplitText.create(el, mask ? { type: 'words,chars', mask: 'chars', charsClass: 'char', wordsClass: 'word' } : { type: 'words,chars', charsClass: 'char', wordsClass: 'word' });
-    return s.chars;
-  }
-
-  /* hero: the studio lights flicker on, the headline stamps in, a light bar sweeps the paint */
+  /* hero: the studio lights come on behind the words (the words themselves show at once) */
   var heroPic = q('.hero__media picture'), heroImg = q('.hero__media img');
-  var intro = gsap.timeline({ defaults: { ease: 'expo.out' }, delay: 0.1 });
-  gsap.set('[data-intro]', { opacity: 1 });
-  if (!heroPic) { root.classList.add('motion-ready'); }
-  if (heroPic) intro.set(heroPic, { filter: 'brightness(0)', scale: 1.12 })
+  var intro = gsap.timeline({ defaults: { ease: 'expo.out' }, delay: 0.05 });
+  if (heroPic) intro.set(heroPic, { filter: 'brightness(0.15)', scale: 1.08 })
     .to(heroPic, { keyframes: [
-      { filter: 'brightness(0.5)', duration: 0.05 }, { filter: 'brightness(0.05)', duration: 0.09 },
-      { filter: 'brightness(0.8)', duration: 0.05 }, { filter: 'brightness(0.15)', duration: 0.12 },
+      { filter: 'brightness(0.6)', duration: 0.05 }, { filter: 'brightness(0.2)', duration: 0.09 },
       { filter: 'brightness(1)', duration: 0.45 }
-    ], ease: 'none' }, 0.15)
-    .to(heroPic, { scale: 1, duration: 2.4, ease: 'expo.out' }, 0.15);
-  if (q('.hero__kicker')) intro.from(splitChars(q('.hero__kicker')), { opacity: 0, duration: 0.4, stagger: 0.012, ease: 'none' }, 0.5);
-  qa('.hero__line').forEach(function (line, n) {
-    intro.from(splitChars(line, true), { yPercent: 118, rotate: 6, duration: 1.15, stagger: 0.024 }, 0.62 + n * 0.14);
-  });
-  var rise = qa('.crumbs, .hero__lede, .page-hero__lede, #hero .hero__actions, .hero__call');
-  if (rise.length) intro.from(rise, { y: 26, opacity: 0, duration: 1, stagger: 0.09 }, 1.05);
-  if (q('.hero__glare')) intro.fromTo('.hero__glare', { xPercent: -60 }, { xPercent: 60, duration: 1.8, ease: 'power2.inOut' }, 0.9);
-  if (q('.hero__cue')) intro.from('.hero__cue', { opacity: 0, y: 12, duration: 0.8 }, 1.6);
-  intro.add(function () { root.classList.add('motion-ready'); }, 0.2);
+    ], ease: 'none' }, 0.1)
+    .to(heroPic, { scale: 1, duration: 2.2, ease: 'expo.out' }, 0.1);
+  if (q('.hero__glare')) intro.fromTo('.hero__glare', { xPercent: -60 }, { xPercent: 60, duration: 1.8, ease: 'power2.inOut' }, 0.5);
+  root.classList.add('motion-ready');
 
-  /* hero on scroll: the car pushes in, the words lift away */
+  /* hero on scroll: the car pushes in slowly; the words stay put */
   if (q('#hero') && heroImg) gsap.timeline({ scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true } })
-    .to(heroImg, { scale: 1.16, yPercent: 7, ease: 'none' }, 0)
-    .to(q('.hero__copy, .page-hero__copy'), { yPercent: -22, opacity: 0.15, ease: 'none' }, 0)
-    .to('.hero__glare', { xPercent: 140, ease: 'none' }, 0);
+    .to(heroImg, { scale: 1.12, yPercent: 6, ease: 'none' }, 0);
 
   /* the torch: a paint-inspection light that follows the cursor (or drifts on its own on touch screens) */
   var hm = q('[data-hero-media]');
   if (hm) {
-    var tx = 0.72, ty = 0.46, cx = tx, cy = ty, t0 = 0;
+    var tx = 0.72, ty = 0.46, cx = tx, cy = ty;
     if (fine) {
       q('#hero').addEventListener('mousemove', function (e) { var r = hm.getBoundingClientRect(); tx = (e.clientX - r.left) / r.width; ty = (e.clientY - r.top) / r.height; });
     }
@@ -449,15 +430,6 @@
   /* scroll progress */
   if (q('.progress span')) gsap.to('.progress span', { scaleX: 1, ease: 'none', scrollTrigger: { start: 0, end: 'max', scrub: 0.3 } });
 
-  /* section titles stamp in letter by letter */
-  qa('.split').forEach(function (el) {
-    var parts = qa('.display', el);
-    var chars = [];
-    parts.forEach(function (p) { chars = chars.concat(splitChars(p, true)); });
-    el.classList.add('is-split');
-    gsap.from(chars, { yPercent: 115, rotate: 5, duration: 1, ease: 'expo.out', stagger: 0.018, scrollTrigger: { trigger: el, start: 'top 86%', once: true } });
-  });
-
   /* text and small blocks rise in */
   ScrollTrigger.batch('.reveal', {
     start: 'top 90%', once: true,
@@ -470,46 +442,18 @@
     var tl = gsap.timeline({ scrollTrigger: { trigger: m, start: 'top 82%', once: true } });
     tl.fromTo(frame, { clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0% 0 0)', duration: 1.3, ease: 'power4.inOut' }, 0);
     if (sq) tl.fromTo(sq, { left: '0%', opacity: 1 }, { left: '100%', duration: 1.3, ease: 'power4.inOut' }, 0).to(sq, { opacity: 0, duration: 0.35 }, 1.1);
-    if (pic) {
-      tl.from(pic, { scale: 1.35, duration: 1.9, ease: 'expo.out' }, 0);
-      gsap.fromTo(pic, { yPercent: -10 }, { yPercent: 0, ease: 'none', scrollTrigger: { trigger: m, start: 'top bottom', end: 'bottom top', scrub: true } });
-    }
+    if (pic) tl.from(pic, { scale: 1.2, duration: 1.6, ease: 'expo.out' }, 0);
   });
   if (mosaic) gsap.fromTo(qa('span', mosaic), { opacity: 0, clipPath: 'inset(0 0 100% 0)' }, {
     opacity: 1, clipPath: 'inset(0 0 0% 0)', duration: 0.7, ease: 'power3.out',
     stagger: { each: 0.012, from: 'random' }, scrollTrigger: { trigger: mosaic, start: 'top 82%', once: true }
   });
 
-  /* tilt and sheen on the pictures */
-  if (fine) qa('.tilt').forEach(function (el) {
-    el.addEventListener('mousemove', function (e) {
-      var r = el.getBoundingClientRect(), px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
-      el.style.setProperty('--ry', ((px - 0.5) * 9).toFixed(2) + 'deg');
-      el.style.setProperty('--rx', ((0.5 - py) * 7).toFixed(2) + 'deg');
-      el.style.setProperty('--sx', (px * 100).toFixed(1) + '%');
-      el.style.setProperty('--sy', (py * 100).toFixed(1) + '%');
-    });
-    el.addEventListener('mouseleave', function () { el.style.setProperty('--rx', '0deg'); el.style.setProperty('--ry', '0deg'); });
-  });
-
-  /* prices slide in and count up */
-  qa('.sheet__row').forEach(function (row) {
-    gsap.from(row, { opacity: 0, x: 70, duration: 1.1, ease: 'expo.out', scrollTrigger: { trigger: row, start: 'top 90%', once: true } });
-    qa('.num', row).forEach(function (n) {
-      var to = Number(n.dataset.to), o = { v: 0 };
-      gsap.to(o, {
-        v: to, duration: 1.8, ease: 'power3.out',
-        scrollTrigger: { trigger: row, start: 'top 88%', once: true },
-        onUpdate: function () { n.textContent = fmt(Math.round(o.v / 100) * 100); }
-      });
-    });
-  });
-
   /* showroom: pinned while eight films wipe across the car */
   if (SHOW.length > 1 && q('#showroom')) {
     var segs = SHOW.length - 1;
     ScrollTrigger.create({
-      trigger: '#showroom', start: 'top top', end: '+=' + (segs * 60) + '%', pin: true,
+      trigger: '#showroom', start: 'top top', end: '+=' + (segs * 42) + '%', pin: true,
       onEnter: function () { Car.load(); },
       onUpdate: function (self) {
         var pos = self.progress * segs, i = Math.min(segs - 1, Math.floor(pos)), t = pos - i;
@@ -521,13 +465,6 @@
   }
   if (q('#prices')) ScrollTrigger.create({ trigger: '#prices', start: 'top bottom', once: true, onEnter: function () { Car.load(); } });
   if (q('.vault--page')) ScrollTrigger.create({ trigger: '.vault--page', start: 'top bottom', once: true, onEnter: function () { Car.load(); } });
-
-  /* the ceramic band: slower picture, sliding words */
-  if (q('.band')) {
-  gsap.fromTo('.band img', { yPercent: -18 }, { yPercent: 0, ease: 'none', scrollTrigger: { trigger: '.band', start: 'top bottom', end: 'bottom top', scrub: true } });
-  gsap.fromTo('.band__line .display:first-child', { xPercent: -12 }, { xPercent: 8, ease: 'none', scrollTrigger: { trigger: '.band', start: 'top bottom', end: 'bottom top', scrub: true } });
-  gsap.fromTo('.band__ghost', { xPercent: 20 }, { xPercent: -6, ease: 'none', scrollTrigger: { trigger: '.band', start: 'top bottom', end: 'bottom top', scrub: true } });
-  }
 
   /* booking: a line fills and each step lights up as it is reached */
   var stepsEls = qa('.steps li');
@@ -559,38 +496,12 @@
     });
   });
 
-  /* the phone number rolls in */
-  var num = q('.contact__number .display');
-  if (num) gsap.from(splitChars(num, true), { yPercent: 120, duration: 1.1, ease: 'expo.out', stagger: 0.04, scrollTrigger: { trigger: num, start: 'top 88%', once: true } });
-
-  /* magnetic buttons */
-  if (fine) qa('.magnetic').forEach(function (b) {
-    var xTo = gsap.quickTo(b, 'x', { duration: 0.6, ease: 'elastic.out(1, 0.45)' }), yTo = gsap.quickTo(b, 'y', { duration: 0.6, ease: 'elastic.out(1, 0.45)' });
-    b.addEventListener('mousemove', function (e) { var r = b.getBoundingClientRect(); xTo((e.clientX - (r.left + r.width / 2)) * 0.3); yTo((e.clientY - (r.top + r.height / 2)) * 0.45); });
-    b.addEventListener('mouseleave', function () { xTo(0); yTo(0); });
-  });
-
-  /* cursor: a dot and a ring that grows over anything you can press */
-  var cur = q('.cursor');
-  if (cur && fine) {
-    var dot = q('.cursor__dot', cur), ring = q('.cursor__ring', cur);
-    var dx = gsap.quickTo(dot, 'x', { duration: 0.08 }), dy = gsap.quickTo(dot, 'y', { duration: 0.08 });
-    var rx = gsap.quickTo(ring, 'x', { duration: 0.45, ease: 'power3.out' }), ry = gsap.quickTo(ring, 'y', { duration: 0.45, ease: 'power3.out' });
-    var seen = false;
-    window.addEventListener('mousemove', function (e) { if (!seen) { seen = true; cur.classList.add('is-live'); gsap.set([dot, ring], { x: e.clientX, y: e.clientY }); } dx(e.clientX); dy(e.clientY); rx(e.clientX); ry(e.clientY); }, { passive: true });
-    document.addEventListener('mouseover', function (e) { cur.classList.toggle('is-hover', !!e.target.closest('a, button, summary, input, .sw, .chip, .tilt')); });
-    window.addEventListener('mousedown', function () { cur.classList.add('is-down'); });
-    window.addEventListener('mouseup', function () { cur.classList.remove('is-down'); });
-    document.addEventListener('mouseleave', function () { gsap.to(cur, { opacity: 0, duration: 0.2 }); });
-    document.addEventListener('mouseenter', function () { gsap.to(cur, { opacity: 1, duration: 0.2 }); });
-  }
-
   window.addEventListener('load', function () { ScrollTrigger.refresh(); });
   }
 
-  /* start once the fonts are in (letters are split by width), but never wait longer than 1.2 s */
+  /* start once the fonts are in (the marquee is measured by width), but never wait longer than 1.2 s */
   var started = false;
   function go() { if (started) return; started = true; startMotion(); }
-  if (document.fonts && document.fonts.load) Promise.all([document.fonts.load('800 1em "Big Shoulders Stencil Display"'), document.fonts.load('400 1em "Martian Mono"')]).then(go, go);
+  if (document.fonts && document.fonts.load) Promise.all([document.fonts.load('800 1em "Big Shoulders Display"'), document.fonts.load('400 1em "Martian Mono"')]).then(go, go);
   setTimeout(go, 1200);
 })();
