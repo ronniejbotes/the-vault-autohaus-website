@@ -214,6 +214,7 @@
       cta.href = WA + encodeURIComponent('Hi The Vault, I\'m interested in colour PPF in ' + f.name + ' (' + f.finish + '). My car is: ');
       var label = cta.querySelector('span') || cta;
       label.textContent = 'Ask about ' + f.name + ' on WhatsApp';
+      var dockCta = q('.dock .btn--cta'); if (dockCta && q('.vault--page')) dockCta.href = cta.href;
     }
     if (grid) qa('.sw', grid).forEach(function (el) {
       var on = Number(el.dataset.id) === f.id;
