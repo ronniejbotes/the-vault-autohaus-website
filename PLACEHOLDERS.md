@@ -4,7 +4,7 @@ Everything still open is marked in the site so it's easy to find: visible text c
 
 ## Done (client's answers, 23 Oct and 28 Oct 2026)
 
-Second-round answers: `seo-program/plans/the-vault-autohaus/content/client-answers-2026-10-28.md`.
+Second-round answers: `seo-program/plans/the-vault-autohaus/content/client-answers-2026-10-28.md`. Feedback on the site (29 Oct): `seo-program/plans/the-vault-autohaus/client-feedback/2026-10-29.md`.
 
 | What | Answer | Where it went |
 |---|---|---|
@@ -49,3 +49,7 @@ Second-round answers: `seo-program/plans/the-vault-autohaus/content/client-answe
 | 12 | **Google Business Profile** | Create with Leighcalitz@gmail.com and verify once there is a street address, then link it here |
 | 13 | **Analytics** (agency GA4 and Clarity) | Add once live, with a privacy policy page (POPIA) |
 | 14 | **Facebook page name**: still "TheVault-Autohaus" in its address | The client can rename the page; update the link if the address changes |
+| 15 | **Part fitment "from" price** (29 Oct feedback, point 10: "part fitment starting from x") | Home price list and services page say "quoted per part" until there is a number |
+| 16 | **"Complimentary detail with each service"** (29 Oct, point 10): with every service, or with PPF jobs only? The site says every PPF job (frontal, full, colour), as in the 21 Oct prices | Home price list, services page, detailing page |
+| 17 | **Hard wax coating** (29 Oct, point 1): a service we should list? Price? It is left off the site until confirmed | Home service line, services page |
+| 18 | **Headlight and tail light restoration "from R2 000"**: the 28 Oct answer was "R2000.00 (depending on the progression of damage)"; the site now says "from R2 000" to follow point 9 | Home, services, detailing, FAQ |

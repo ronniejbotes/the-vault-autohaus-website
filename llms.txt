@@ -1,20 +1,20 @@
 # The Vault SA
 
-> Car paint protection and detailing studio in Germiston and Bedfordview, Gauteng, South Africa: clear, matte and colour paint protection film (PPF), fitting of wings and other exterior parts, exterior and interior detailing, polishing, ceramic coating, and headlight and tail light restoration. By appointment only.
+> Car paint protection and detailing studio in Germiston and Bedfordview, Gauteng, South Africa: clear, matte and colour paint protection film (PPF), fitting of wings, spoilers and upgraded body parts, exterior and interior detailing with clay bar decontamination, paint correction and polishing, ceramic coating, and headlight and tail light restoration. By appointment only.
 
 Website: https://thevaultppf.co.za/
 
-## Prices (South African rand)
-- Frontal PPF: R15 000, with a complimentary detail. Covers the complete front bumper (painted sections included), the entire bonnet, both front fenders and both painted side-mirror caps
-- Full PPF: R35 000, with a complimentary detail
+## Prices (South African rand, starting prices)
+- Frontal PPF: from R15 000, with a complimentary detail. Covers the complete front bumper (painted sections included), the entire bonnet, both front fenders and both painted side-mirror caps
+- Full PPF: from R35 000, with a complimentary detail
 - Matte PPF: the same price as clear PPF
-- Colour PPF: R40 000, with a complimentary detail, door shuts included (394 TPU colour films to choose from)
+- Colour PPF: from R40 000, with a complimentary detail, door shuts included (394 TPU colour films to choose from)
 - PPF comes with a 5-year warranty
 - Large SUVs can cost up to R3 000 extra for clear PPF and up to R5 000 extra for colour PPF
-- Wings and other exterior parts: quoted for the parts and the car
+- Wings, spoilers and other body parts: quoted for the parts and the car
 - Detail without a wrap: R4 000 to R6 000, depending on the car; interior or exterior details on their own are quoted per car
 - Engine bay detailing: an add-on, after an inspection
-- Headlight and tail light restoration: R2 000, depending on how far the damage has gone
+- Headlight and tail light restoration: from R2 000, depending on how far the damage has gone
 - Polishing: basic gloss polish from R1 200, light correction from R2 000, medium correction from R3 500; heavy correction needs an inspection first
 - Ceramic coating packages (how long they last assumes appropriate care):
   - Essential Gloss: R2 500 to R3 500, lasts 6 to 12 months. Exterior wash and decontamination, clay bar treatment, light paint enhancement, entry-level ceramic coating or ceramic sealant
@@ -34,9 +34,13 @@ Website: https://thevaultppf.co.za/
 - Ceramic coating: Detail Ease or Meguiar's
 
 ## Pages
-- https://thevaultppf.co.za/ : services, prices, the colour vault (394 colour PPF films on a live car preview), booking steps, questions, contact
+- https://thevaultppf.co.za/ : what we do, starting prices, area and hours, and a car that changes colour as you scroll
+- https://thevaultppf.co.za/services.html : every service with what it includes and its prices, and how a job works
+- https://thevaultppf.co.za/colour-changer.html : the colour changer, all 394 colour PPF films on a live car preview
+- https://thevaultppf.co.za/faq.html : questions about prices, VAT, timing, booking, PPF, colour PPF and detailing
+- https://thevaultppf.co.za/contact.html : WhatsApp, phone, area, hours and social media
 - https://thevaultppf.co.za/ppf.html : clear and matte paint protection film, frontal or full
-- https://thevaultppf.co.za/colour-ppf.html : colour change in TPU colour PPF, with the colour vault
+- https://thevaultppf.co.za/colour-ppf.html : colour change in TPU colour PPF, how it compares with a vinyl wrap, prices; links to the colour changer
 - https://thevaultppf.co.za/detailing.html : interior and exterior car detailing, the full checklist and add-ons
 - https://thevaultppf.co.za/polishing-ceramic-coating.html : machine polishing (paint correction) and the three ceramic coating packages
 
