@@ -99,9 +99,14 @@
     }
   }
 
-  /* ---------- the car: one real photo, repainted per film from a shading map and a paint mask ---------- */
+  /* ---------- the car: one real photo, repainted per film from a shading map and a paint mask ----------
+     car-alpha.webp is the car's outline plus a soft contact shadow (its alpha channel). Everything outside it
+     turns see-through, so the car sits on the section with the big film names showing around it. The floor
+     reflection is kept: it is made see-through in proportion to its brightness, so over black it looks the
+     same as the photo, and it fades out towards the bottom and the sides. */
   var Car = (function () {
-    var W = 1400, H = 761, base, shade, mask, ready = false, cache = {}, order = [], loading = null, waiting = [];
+    var W = 1400, H = 761, base, shade, mask, cut, fx, fy, ready = false, cache = {}, order = [], loading = null, waiting = [];
+    function ss(e0, e1, v) { var t = (v - e0) / (e1 - e0); t = t < 0 ? 0 : t > 1 ? 1 : t; return t * t * (3 - 2 * t); }
     function img(src) {
       return new Promise(function (res, rej) { var i = new Image(); i.decoding = 'async'; i.onload = function () { res(i); }; i.onerror = rej; i.src = src; });
     }
@@ -116,8 +121,12 @@
       var want = Math.min(window.innerWidth, 1400) * Math.min(window.devicePixelRatio || 1, 2);
       var scale = Math.min(1, Math.max(0.5, want / 1400));
       W = Math.round(1400 * scale); H = Math.round(761 * scale);
-      loading = Promise.all([img('assets/car/car-base.webp'), img('assets/car/car-shade.webp'), img('assets/car/car-mask.png')]).then(function (ims) {
-        base = pixels(ims[0]); shade = pixels(ims[1]); mask = pixels(ims[2]);
+      loading = Promise.all([img('assets/car/car-base.webp'), img('assets/car/car-shade.webp'), img('assets/car/car-mask.png'), img('assets/car/car-alpha.webp')]).then(function (ims) {
+        base = pixels(ims[0]); shade = pixels(ims[1]); mask = pixels(ims[2]); cut = pixels(ims[3]);
+        /* where the floor reflection may show: under the car, fading out at the bottom and the sides */
+        fy = new Float32Array(H); fx = new Float32Array(W);
+        for (var yy = 0; yy < H; yy++) { var v = (yy + 0.5) / H; fy[yy] = ss(0.62, 0.70, v) * (1 - ss(0.80, 0.985, v)); }
+        for (var xx = 0; xx < W; xx++) { var u = (xx + 0.5) / W; fx[xx] = ss(0.02, 0.10, u) * (1 - ss(0.90, 0.98, u)); }
         qa('canvas.car-canvas').forEach(function (c) { c.width = W; c.height = H; });
         ready = true;
         root.classList.add('car-ready');
@@ -131,24 +140,34 @@
       var x = c.getContext('2d'), out = x.createImageData(W, H), o = out.data;
       var col = rgb(f.base), fr = col[0], fg = col[1], fb = col[2];
       var fin = f.finish, sh = fin === 'Pearl & shift' ? rgb(shiftHue(f.base, 55)) : null;
-      var gain = 1.08, sg = 0.95, n = W * H;
-      for (var p = 0, i = 0; p < n; p++, i += 4) {
-        var m = mask[i] / 255;
-        if (m < 0.004) { o[i] = base[i]; o[i + 1] = base[i + 1]; o[i + 2] = base[i + 2]; o[i + 3] = 255; continue; }
-        var d = shade[i] / 127.5, s = shade[i + 1] / 255, r = fr, g = fg, b = fb;
-        if (fin === 'Matte') { d = 0.42 + 0.5 * Math.min(d, 1.3); s *= 0.06; }
-        else if (fin === 'Satin') { d = 0.35 + 0.65 * d; s *= 0.32; }
-        else if (fin === 'Chrome') { d = Math.max(0.05, Math.min(1.8, (d - 0.55) * 2 + 0.6)); s = Math.min(1, s * 1.4); }
-        else if (fin === 'Metallic') { var hh = ((p * 2654435761) >>> 0) % 1000; if (hh < 7) s = Math.min(1, s + 0.22 * d); d *= 0.97 + (hh % 7) * 0.008; }
-        else if (fin === 'Pearl & shift') { var t = Math.min(1, Math.max(0, d - 0.35)); r += (sh[0] - fr) * t; g += (sh[1] - fg) * t; b += (sh[2] - fb) * t; }
-        else if (fin === 'Carbon') { var xx = p % W, yy = (p / W) | 0; if ((((xx + yy) >> 2) + ((xx - yy + 8192) >> 2)) & 1) d *= 0.74; }
-        else if (fin === 'Holographic') { var hc = hsl(((p % W) / W * 300 + d * 140) % 360, 0.8, 0.62); r = hc[0]; g = hc[1]; b = hc[2]; }
-        var cr = r * d * gain + s * 255 * sg, cg = g * d * gain + s * 255 * sg, cb = b * d * gain + s * 255 * sg;
-        if (cr > 255) cr = 255; if (cg > 255) cg = 255; if (cb > 255) cb = 255;
-        o[i] = base[i] + (cr - base[i]) * m;
-        o[i + 1] = base[i + 1] + (cg - base[i + 1]) * m;
-        o[i + 2] = base[i + 2] + (cb - base[i + 2]) * m;
-        o[i + 3] = 255;
+      var gain = 1.08, sg = 0.95, n = W * H, floorT = 8;
+      for (var p = 0, i = 0, px = 0, py = 0; p < n; p++, i += 4) {
+        var m = mask[i] / 255, R = base[i], G = base[i + 1], B = base[i + 2];
+        if (m >= 0.004) {
+          var d = shade[i] / 127.5, s = shade[i + 1] / 255, r = fr, g = fg, b = fb;
+          if (fin === 'Matte') { d = 0.42 + 0.5 * Math.min(d, 1.3); s *= 0.06; }
+          else if (fin === 'Satin') { d = 0.35 + 0.65 * d; s *= 0.32; }
+          else if (fin === 'Chrome') { d = Math.max(0.05, Math.min(1.8, (d - 0.55) * 2 + 0.6)); s = Math.min(1, s * 1.4); }
+          else if (fin === 'Metallic') { var hh = ((p * 2654435761) >>> 0) % 1000; if (hh < 7) s = Math.min(1, s + 0.22 * d); d *= 0.97 + (hh % 7) * 0.008; }
+          else if (fin === 'Pearl & shift') { var t = Math.min(1, Math.max(0, d - 0.35)); r += (sh[0] - fr) * t; g += (sh[1] - fg) * t; b += (sh[2] - fb) * t; }
+          else if (fin === 'Carbon') { var xx = p % W, yy = (p / W) | 0; if ((((xx + yy) >> 2) + ((xx - yy + 8192) >> 2)) & 1) d *= 0.74; }
+          else if (fin === 'Holographic') { var hc = hsl(((p % W) / W * 300 + d * 140) % 360, 0.8, 0.62); r = hc[0]; g = hc[1]; b = hc[2]; }
+          var cr = r * d * gain + s * 255 * sg, cg = g * d * gain + s * 255 * sg, cb = b * d * gain + s * 255 * sg;
+          if (cr > 255) cr = 255; if (cg > 255) cg = 255; if (cb > 255) cb = 255;
+          R += (cr - R) * m; G += (cg - G) * m; B += (cb - B) * m;
+        }
+        var sa = cut[i + 3];
+        if (sa > 252) { o[i] = R; o[i + 1] = G; o[i + 2] = B; o[i + 3] = 255; }
+        else {
+          /* outside the car: drop the studio's black, keep the reflection (same look over black) */
+          sa /= 255;
+          var e = 1 - sa, k = sa + e * fy[py] * fx[px], th = e * floorT;
+          R = (R > th ? R - th : 0) * k; G = (G > th ? G - th : 0) * k; B = (B > th ? B - th : 0) * k;
+          var mx = (R > G ? (R > B ? R : B) : (G > B ? G : B)) / 255, al = mx > sa ? (mx > 1 ? 1 : mx) : sa;
+          if (al < 0.004) { o[i] = 0; o[i + 1] = 0; o[i + 2] = 0; o[i + 3] = 0; }
+          else { o[i] = R / al; o[i + 1] = G / al; o[i + 2] = B / al; o[i + 3] = al * 255; }
+        }
+        if (++px === W) { px = 0; py++; }
       }
       x.putImageData(out, 0, 0);
       cache[f.id] = c; order.push(f.id);
@@ -167,7 +186,13 @@
     var a = q(aId), b = q(bId), sq = q(sqId);
     if (!a || !b) return null;
     var ax = a.getContext('2d'), bx = b.getContext('2d'), current = null, busy = null;
-    function paint(ctx, f) { ctx.drawImage(Car.render(f), 0, 0); }
+    function paint(ctx, f) { ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); ctx.drawImage(Car.render(f), 0, 0); }
+    /* the new film shows left of the line, the old one right of it; they never overlap, so the see-through
+       edges and the reflection don't double up where the two meet */
+    function split(t) {
+      b.style.clipPath = 'inset(0 ' + ((1 - t) * 100) + '% 0 0)';
+      a.style.clipPath = t > 0 ? 'inset(0 0 0 ' + (t * 100) + '%)' : '';
+    }
     return {
       show: function (f, animate) {
         Car.whenReady(function () {
@@ -178,8 +203,8 @@
           sq.style.opacity = 1;
           busy = gsap.to(st, {
             p: 1, duration: 1, ease: 'power3.inOut',
-            onUpdate: function () { b.style.clipPath = 'inset(0 ' + ((1 - st.p) * 100) + '% 0 0)'; sq.style.left = (st.p * 100) + '%'; },
-            onComplete: function () { paint(ax, f); b.style.clipPath = 'inset(0 100% 0 0)'; sq.style.opacity = 0; busy = null; }
+            onUpdate: function () { split(st.p); sq.style.left = (st.p * 100) + '%'; },
+            onComplete: function () { paint(ax, f); split(0); sq.style.opacity = 0; busy = null; }
           });
           current = f;
         });
@@ -188,7 +213,7 @@
         if (!Car.ready()) return;
         if (this._from !== from) { paint(ax, from); this._from = from; }
         if (this._to !== to) { paint(bx, to); this._to = to; }
-        b.style.clipPath = 'inset(0 ' + ((1 - t) * 100) + '% 0 0)';
+        split(t);
         sq.style.left = (t * 100) + '%';
         sq.style.opacity = t > 0.015 && t < 0.985 ? 1 : 0;
       }
@@ -309,7 +334,7 @@
     }
   }
 
-  /* the showroom: eight films, wiped on one after another as you scroll */
+  /* the showroom: a short run of films, wiped on one after another as you scroll */
   var SHOW = ['Racing Orange', 'Miami Blue', 'Super Matte Black', 'Volcanic Yellow', 'Metallic Sepang Blue', "Liquid Metallic Dragon's Blood Red", 'Tiffany', 'Ferrari Red']
     .map(byName).filter(Boolean);
   var show = Stage('#show-a', '#show-b', '#show-squeegee');
@@ -450,7 +475,7 @@
     stagger: { each: 0.012, from: 'random' }, scrollTrigger: { trigger: mosaic, start: 'top 82%', once: true }
   });
 
-  /* showroom: pinned while eight films wipe across the car */
+  /* showroom: pinned while the films wipe across the car */
   if (SHOW.length > 1 && q('#showroom')) {
     var segs = SHOW.length - 1;
     ScrollTrigger.create({

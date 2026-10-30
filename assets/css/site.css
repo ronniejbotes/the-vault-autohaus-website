@@ -298,16 +298,17 @@ button, input { font: inherit; color: inherit; }
   background: radial-gradient(70% 60% at 50% 58%, #111316 0%, #050506 72%); }
 .showroom__name { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-46%); margin: 0; text-align: center; pointer-events: none; white-space: nowrap; overflow: hidden;
   font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: clamp(5rem, 17vw, 17rem); line-height: 0.9;
-  color: color-mix(in srgb, var(--film) 16%, transparent); transition: color .6s; }
+  color: color-mix(in srgb, var(--film) 22%, transparent); transition: color .6s; }
 .showroom__name span { display: inline-block; transform: skewX(var(--lean)); }
 .showroom__head { position: relative; z-index: 2; }
 .showroom__head .section-title { font-size: clamp(2rem, 4vw, 3.4rem); }
 .showroom__head p { margin: 10px 0 0; color: #c4c9ce; }
 .car-wrap { position: relative; width: 100%; aspect-ratio: 1400 / 761; }
 .car-wrap--show { align-self: center; justify-self: center; width: min(1180px, 96vw, calc((100svh - 330px) * 1.84)); z-index: 1; }
-.car-wrap { --fade: linear-gradient(90deg, transparent 0, #000 3.5%, #000 96.5%, transparent 100%), linear-gradient(180deg, transparent 0, #000 6%, #000 84%, transparent 100%);
-  -webkit-mask-image: var(--fade); -webkit-mask-composite: source-in; mask-image: var(--fade); mask-composite: intersect; }
 .car-fallback, .car-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+/* the car has no box: the canvases are see-through outside the car (site.js), and the plain photo is cut
+   to the same outline, so the film names behind show around it */
+.car-fallback { -webkit-mask: url(../car/car-alpha.webp) 0 0 / 100% 100% no-repeat; mask: url(../car/car-alpha.webp) 0 0 / 100% 100% no-repeat; }
 .car-canvas { opacity: 0; transition: opacity .6s; }
 .car-ready .car-canvas { opacity: 1; }
 .car-ready .car-fallback { opacity: 0; transition: opacity .6s; }
