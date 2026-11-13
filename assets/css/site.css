@@ -417,6 +417,13 @@ button, input { font: inherit; color: inherit; }
 .foot__key { margin: 22px 0 0; color: #c4c9ce; }
 .foot__key a, .foot__key .key { color: var(--key); font-weight: 600; }
 .foot__legal { margin-top: 14px; }
+/* Studio map (client's address, 13 Nov 2026). Keyless Google embed, lazy, so its
+   script only loads when someone scrolls to the footer. */
+.foot__map { margin-top: 18px; border: 1px solid var(--seam); border-radius: 14px; overflow: hidden; aspect-ratio: 4 / 3; background: #15181b; }
+.foot__map iframe { display: block; width: 100%; height: 100%; border: 0; }
+.foot__dir { margin-top: 10px; }
+.foot__dir a { color: var(--key); font-weight: 600; text-decoration: underline; text-underline-offset: 4px; display: inline-flex; align-items: center; min-height: 44px; }
+@media (min-width: 700px) { .foot__map { aspect-ratio: auto; height: 300px; } }
 .foot__legal a { text-decoration: underline; text-underline-offset: 3px; }
 @media (min-width: 961px) { .foot { padding-bottom: 44px; } }
 .dock { position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; display: none; align-items: center; gap: 12px; padding: 10px 12px calc(10px + env(safe-area-inset-bottom)); background: rgba(11, 12, 14, 0.96); border-top: 1px solid var(--seam); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
